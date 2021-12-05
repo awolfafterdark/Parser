@@ -9,7 +9,6 @@ import java.io.Serializable;
  * @author Liu Dong
  */
 public class Icon implements IconFace, Serializable {
-
     private static final long serialVersionUID = 8680309892249769701L;
     private final String path;
     private final int density;

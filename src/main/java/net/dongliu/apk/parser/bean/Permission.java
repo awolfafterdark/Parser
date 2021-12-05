@@ -50,5 +50,4 @@ public class Permission {
     public String getProtectionLevel() {
         return protectionLevel;
     }
-
 }
