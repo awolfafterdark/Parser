@@ -408,7 +408,8 @@ public abstract class AbstractApkFile implements Closeable {
         this.iconPaths = null;
     }
 
-    public ResourceTable getResourceTable() {
+    public ResourceTable getResourceTable() throws IOException {
+        parseResourceTable();
         return resourceTable;
     }
 
