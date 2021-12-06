@@ -408,6 +408,10 @@ public abstract class AbstractApkFile implements Closeable {
         this.iconPaths = null;
     }
 
+    public ResourceTable getResourceTable() {
+        return resourceTable;
+    }
+
     /**
      * The local used to parse apk
      */
