@@ -21,15 +21,20 @@ public class Type {
     private ByteBuffer buffer;
     private long[] offsets;
     private StringPool stringPool;
+    private final ResTableConfig config;
 
     // see Densities.java for values
-    private int density;
+    private final int density;
 
     public Type(TypeHeader header) {
         this.id = header.getId();
-        ResTableConfig config = header.getConfig();
+        this.config = header.getConfig();
         this.locale = new Locale(config.getLanguage(), config.getCountry());
         this.density = config.getDensity();
+    }
+
+    public ResTableConfig getConfig() {
+        return config;
     }
 
     public ResourceEntry getResourceEntry(int id) {
