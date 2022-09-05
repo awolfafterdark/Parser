@@ -16,7 +16,9 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
-import static net.dongliu.apk.parser.struct.ChunkType.UNKNOWN_YET;
+import static net.dongliu.apk.parser.struct.ChunkType.OVERLAYABLE_POLICY_TYPE;
+import static net.dongliu.apk.parser.struct.ChunkType.STAGED_ALIAS_TYPE;
+import static net.dongliu.apk.parser.struct.ChunkType.OVERLAYABLE_TYPE;
 
 /**
  * Parse android resource table file.
@@ -58,11 +60,13 @@ public class ResourceTableParser {
         resourceTable.setStringPool(stringPool);
 
         if (resourceTableHeader.getPackageCount() != 0) {
-            PackageHeader packageHeader = (PackageHeader) readChunkHeader();
+            ChunkHeader ogHeader = readChunkHeader();
+            PackageHeader packageHeader = (PackageHeader) ogHeader;
             for (int i = 0; i < resourceTableHeader.getPackageCount(); i++) {
                 Pair<ResourcePackage, PackageHeader> pair = readPackage(packageHeader);
                 resourceTable.addPackage(pair.getLeft());
                 packageHeader = pair.getRight();
+                if (packageHeader == null) break;
             }
         }
     }
@@ -219,7 +223,9 @@ public class ResourceTableParser {
                 libraryHeader.setCount(Buffers.readUInt(buffer));
                 Buffers.position(buffer, begin + headerSize);
                 return libraryHeader;
-            case UNKNOWN_YET:
+            case OVERLAYABLE_TYPE:
+            case OVERLAYABLE_POLICY_TYPE:
+            case STAGED_ALIAS_TYPE:
             case ChunkType.NULL:
                 Buffers.position(buffer, begin + headerSize);
                 return new NullHeader(headerSize, chunkSize);
